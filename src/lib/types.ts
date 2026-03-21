@@ -1,118 +1,119 @@
-export type SectorType = 'economics' | 'politics' | 'security' | 'education' | 'randd';
-export type GamePhase = 'lobby' | 'playing' | 'finished';
+export type Tag = "economics" | "politics" | "security" | "education" | "law";
+export type GamePhase = "active" | "evaluating" | "completed";
 
-export const SECTOR_COLORS: Record<SectorType, string> = {
-  economics: '#f0b429',
-  politics: '#e53e3e',
-  security: '#3182ce',
-  education: '#38a169',
-  randd: '#805ad5',
+export const ALL_TAGS: Tag[] = [
+	"economics",
+	"politics",
+	"security",
+	"education",
+	"law",
+];
+
+export const TAG_COLORS: Record<Tag, string> = {
+	economics: "#f0b429",
+	politics: "#e53e3e",
+	security: "#3182ce",
+	education: "#38a169",
+	law: "#805ad5",
 };
 
-export const SECTOR_LABELS: Record<SectorType, string> = {
-  economics: 'Economics',
-  politics: 'Politics',
-  security: 'Security',
-  education: 'Education',
-  randd: 'R&D',
+export const TAG_LABELS: Record<Tag, string> = {
+	economics: "Economics",
+	politics: "Politics",
+	security: "Security",
+	education: "Education",
+	law: "Law",
 };
-
-export const ALL_SECTORS: SectorType[] = ['economics', 'politics', 'security', 'education', 'randd'];
-
-export interface Resources {
-  budget: number;
-  influence: number;
-  stability: number;
-  knowledge: number;
-}
-
-export interface SectorState {
-  level: number;
-  investment: number;
-  growth: number;
-}
 
 export interface Player {
-  id: string;
-  name: string;
-  region_id: string;
-  resources: Resources;
-  ready: boolean;
-  connected: boolean;
-}
-
-export interface PlayerState {
-  player: Player;
-  sectors: Record<SectorType, SectorState>;
-  score: number;
-  turn_actions: Action[];
+	id: string;
+	name: string;
+	points: number;
+	total_score: number;
+	connected: boolean;
 }
 
 export interface Region {
-  id: string;
-  name: string;
-  country: string;
-  continent: string;
-  base_stats: Record<SectorType, number>;
-  description: string;
+	id: string;
+	name: string;
+	country: string;
+	continent: string;
+	description: string;
 }
 
-export interface WorldEvent {
-  id: string;
-  title: string;
-  description: string;
-  source: string;
-  affected_sectors: SectorType[];
-  impact: Record<SectorType, number>;
-  duration: number;
-  region_specific: string;
+export interface Challenge {
+	id: string;
+	tag: Tag;
+	title: string;
+	description: string;
+	source: string;
+	region: string;
+	severity: number;
+	created_at: string;
+	active: boolean;
+}
+
+export interface Proposal {
+	id: string;
+	player_id: string;
+	player_name: string;
+	challenge_id: string;
+	description: string;
+	points_invested: number;
+	submitted_at: string;
+	ai_score: number;
+	ai_feedback: string;
+}
+
+export interface WeekWinner {
+	player_id: string;
+	player_name: string;
+	score: number;
+	summary: string;
 }
 
 export interface Game {
-  id: string;
-  name: string;
-  max_players: number;
-  players: Record<string, PlayerState>;
-  phase: GamePhase;
-  current_turn: number;
-  max_turns: number;
-  events: WorldEvent[];
-  active_events: WorldEvent[];
-  created_at: string;
-  host_id: string;
+	id: string;
+	name: string;
+	region_id: string;
+	region_name: string;
+	tags: Tag[];
+	phase: GamePhase;
+	players: Record<string, Player>;
+	challenges: Challenge[];
+	proposals: Proposal[];
+	week_number: number;
+	week_start: string;
+	week_end: string;
+	host_id: string;
+	created_at: string;
+	winner?: WeekWinner;
 }
 
 export interface GameListItem {
-  id: string;
-  name: string;
-  phase: GamePhase;
-  player_count: number;
-  max_players: number;
-  max_turns: number;
-  current_turn: number;
-  created_at: string;
-}
-
-export interface Action {
-  type: 'allocate' | 'policy' | 'respond_event';
-  data: Record<string, unknown>;
-}
-
-export interface WSMessage {
-  type: string;
-  payload: Record<string, unknown>;
+	id: string;
+	name: string;
+	region_name: string;
+	tags: Tag[];
+	phase: GamePhase;
+	player_count: number;
+	week_number: number;
+	created_at: string;
 }
 
 export interface ChatMessage {
-  player_id: string;
-  player_name: string;
-  message: string;
-  timestamp: number;
+	player_id: string;
+	player_name: string;
+	message: string;
+	timestamp: number;
 }
 
-/** Local player identity stored in client stores */
 export interface LocalPlayer {
-  id: string;
-  name: string;
-  region_id: string;
+	id: string;
+	name: string;
+}
+
+export interface WSMessage {
+	type: string;
+	payload: Record<string, unknown>;
 }
