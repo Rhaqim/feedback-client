@@ -1,0 +1,8 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import GameBoard from '../../components/GameBoard.svelte';
+const { id } = Astro.params;
+---
+<Layout title="WorldGame - Playing">
+  <GameBoard gameId={id} client:load />
+</Layout>
