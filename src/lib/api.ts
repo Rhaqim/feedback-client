@@ -1,4 +1,4 @@
-import type { Game, GameListItem, Region, Tag, Proposal, DBChatMessage } from "./types";
+import type { Game, GameListItem, Region, Tag, Proposal, DBChatMessage, FeedItem } from "./types";
 
 const BASE_URL = "http://localhost:8080";
 
@@ -111,4 +111,17 @@ export async function getChat(
 export async function listRegions(): Promise<Region[]> {
 	const data = await request<{ regions: Region[] }>("/api/regions");
 	return data.regions;
+}
+
+/** GET /api/feeds -- List recent feed items */
+export async function listFeedItems(): Promise<FeedItem[]> {
+	const data = await request<{ feed_items: FeedItem[] }>("/api/feeds");
+	return data.feed_items;
+}
+
+/** POST /api/feeds/fetch -- Trigger a manual feed fetch */
+export async function triggerFeedFetch(): Promise<{ status: string; count: number }> {
+	return request<{ status: string; count: number }>("/api/feeds/fetch", {
+		method: "POST",
+	});
 }

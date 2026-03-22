@@ -123,6 +123,20 @@ export interface LocalPlayer {
 	name: string;
 }
 
+export interface FeedItem {
+	id: number;
+	tag: Tag;
+	region_id: string;
+	title: string;
+	description: string;
+	url: string;
+	source: string;
+	feed_name: string;
+	published_at: string;
+	fetched_at: string;
+	used_in_game: boolean;
+}
+
 export interface WSMessage {
 	type: string;
 	payload: Record<string, unknown>;
