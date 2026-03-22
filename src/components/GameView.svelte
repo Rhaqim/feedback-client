@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, onDestroy } from "svelte";
 	import { ws } from "../lib/websocket";
-	import { getGame, evaluateGame, nextWeek } from "../lib/api";
+	import { getGame, evaluateGame, nextWeek, getChat } from "../lib/api";
 	import {
 		gameState,
 		currentPlayer,
@@ -62,11 +62,25 @@
 	}
 
 	onMount(async () => {
-		// Load initial game state
+		// Load initial game state and chat history
 		try {
 			if (gameId) {
-				const g = await getGame(gameId);
+				const [g, chatResult] = await Promise.all([
+					getGame(gameId),
+					getChat(gameId).catch(() => ({ messages: [] })),
+				]);
 				gameState.set(g);
+				// Convert DB chat messages to client format
+				if (chatResult.messages.length > 0) {
+					chatMessages.set(
+						chatResult.messages.map(m => ({
+							player_id: m.player_id,
+							player_name: m.player_name,
+							message: m.message,
+							timestamp: new Date(m.created_at).getTime(),
+						})),
+					);
+				}
 			}
 		} catch (e: any) {
 			error = e.message;

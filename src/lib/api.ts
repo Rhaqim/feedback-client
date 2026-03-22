@@ -1,4 +1,4 @@
-import type { Game, GameListItem, Region, Tag, Proposal } from "./types";
+import type { Game, GameListItem, Region, Tag, Proposal, DBChatMessage } from "./types";
 
 const BASE_URL = "http://localhost:8080";
 
@@ -95,6 +95,15 @@ export async function nextWeek(
 			method: "POST",
 			body: JSON.stringify({ player_id }),
 		},
+	);
+}
+
+/** GET /api/games/:id/chat -- Load chat history */
+export async function getChat(
+	gameId: string,
+): Promise<{ messages: DBChatMessage[] }> {
+	return request<{ messages: DBChatMessage[] }>(
+		`/api/games/${gameId}/chat`,
 	);
 }
 

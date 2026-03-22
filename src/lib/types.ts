@@ -108,6 +108,16 @@ export interface ChatMessage {
 	timestamp: number;
 }
 
+/** ChatMessage as returned from the REST API (DB format) */
+export interface DBChatMessage {
+	id: number;
+	game_id: string;
+	player_id: string;
+	player_name: string;
+	message: string;
+	created_at: string;
+}
+
 export interface LocalPlayer {
 	id: string;
 	name: string;

@@ -55,7 +55,7 @@
 					bind:value={playerName}
 					placeholder="Enter your name..."
 					maxlength="20"
-					autofocus
+          required
 				/>
 			</div>
 
