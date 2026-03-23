@@ -135,6 +135,33 @@ export interface FeedItem {
 	published_at: string;
 	fetched_at: string;
 	used_in_game: boolean;
+	dismissed: boolean;
+}
+
+export interface CuratedChallenge {
+	id: number;
+	feed_item_id?: number;
+	tag: Tag;
+	region_id: string;
+	title: string;
+	description: string;
+	source: string;
+	severity: number;
+	active: boolean;
+	used_in_game: boolean;
+	curator_notes: string;
+	created_at: string;
+}
+
+export interface CurateChallengeRequest {
+	feed_item_id?: number;
+	tag: Tag;
+	region_id: string;
+	title: string;
+	description: string;
+	source: string;
+	severity: number;
+	curator_notes: string;
 }
 
 export interface WSMessage {

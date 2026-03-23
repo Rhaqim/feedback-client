@@ -1,4 +1,4 @@
-import type { Game, GameListItem, Region, Tag, Proposal, DBChatMessage, FeedItem } from "./types";
+import type { Game, GameListItem, Region, Tag, Proposal, DBChatMessage, FeedItem, CuratedChallenge, CurateChallengeRequest } from "./types";
 
 const BASE_URL = "http://localhost:8080";
 
@@ -122,6 +122,65 @@ export async function listFeedItems(): Promise<FeedItem[]> {
 /** POST /api/feeds/fetch -- Trigger a manual feed fetch */
 export async function triggerFeedFetch(): Promise<{ status: string; count: number }> {
 	return request<{ status: string; count: number }>("/api/feeds/fetch", {
+		method: "POST",
+	});
+}
+
+// ---------- Game Master API ----------
+
+/** GET /api/game-master/feeds -- List feed items with filters */
+export async function gmListFeeds(
+	tag?: string,
+	regionId?: string,
+	unusedOnly?: boolean,
+): Promise<FeedItem[]> {
+	const params = new URLSearchParams();
+	if (tag) params.set("tag", tag);
+	if (regionId) params.set("region_id", regionId);
+	if (unusedOnly) params.set("unused", "true");
+	const qs = params.toString();
+	const data = await request<{ feed_items: FeedItem[] }>(
+		`/api/game-master/feeds${qs ? "?" + qs : ""}`,
+	);
+	return data.feed_items;
+}
+
+/** POST /api/game-master/curate -- Create a curated challenge */
+export async function gmCurate(
+	req: CurateChallengeRequest,
+): Promise<CuratedChallenge> {
+	const data = await request<{ curated_challenge: CuratedChallenge }>(
+		"/api/game-master/curate",
+		{ method: "POST", body: JSON.stringify(req) },
+	);
+	return data.curated_challenge;
+}
+
+/** GET /api/game-master/challenges -- List curated challenges */
+export async function gmListChallenges(
+	tag?: string,
+	regionId?: string,
+): Promise<CuratedChallenge[]> {
+	const params = new URLSearchParams();
+	if (tag) params.set("tag", tag);
+	if (regionId) params.set("region_id", regionId);
+	const qs = params.toString();
+	const data = await request<{ curated_challenges: CuratedChallenge[] }>(
+		`/api/game-master/challenges${qs ? "?" + qs : ""}`,
+	);
+	return data.curated_challenges;
+}
+
+/** DELETE /api/game-master/challenges/:id -- Delete a curated challenge */
+export async function gmDeleteChallenge(id: number): Promise<void> {
+	await request<{ status: string }>(`/api/game-master/challenges/${id}`, {
+		method: "DELETE",
+	});
+}
+
+/** POST /api/game-master/dismiss/:id -- Dismiss a feed item */
+export async function gmDismissFeed(id: number): Promise<void> {
+	await request<{ status: string }>(`/api/game-master/dismiss/${id}`, {
 		method: "POST",
 	});
 }

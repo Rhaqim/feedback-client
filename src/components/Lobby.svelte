@@ -128,6 +128,7 @@
 		<p class="tagline">
 			Solve real-world challenges. Compete with proposals. Win with strategy.
 		</p>
+		<a href="/game-master" class="gm-link">Game Master Panel</a>
 	</header>
 
 	<div class="lobby-content">
@@ -306,6 +307,23 @@
 	.tagline {
 		color: var(--text-secondary);
 		font-size: 1.1rem;
+	}
+
+	.gm-link {
+		display: inline-block;
+		margin-top: 0.75rem;
+		color: var(--text-muted);
+		text-decoration: none;
+		font-size: 0.85rem;
+		padding: 0.3rem 0.8rem;
+		border: 1px solid var(--border);
+		border-radius: 6px;
+		transition: all 0.2s;
+	}
+
+	.gm-link:hover {
+		color: var(--accent);
+		border-color: var(--accent);
 	}
 
 	.lobby-content {
