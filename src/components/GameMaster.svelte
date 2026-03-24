@@ -41,6 +41,7 @@
 	let curateRegionId = "";
 	let curateSeverity = 5;
 	let curateSource = "rss";
+	let curateSourceURL = "";
 	let curateNotes = "";
 	let curating = false;
 
@@ -106,6 +107,7 @@
 		curateRegionId = item.region_id || "";
 		curateSeverity = 5;
 		curateSource = item.feed_name || "rss";
+		curateSourceURL = item.url || "";
 		curateNotes = "";
 		showCurateForm = true;
 	}
@@ -118,6 +120,7 @@
 		curateRegionId = "";
 		curateSeverity = 5;
 		curateSource = "custom";
+		curateSourceURL = "";
 		curateNotes = "";
 		showCurateForm = true;
 	}
@@ -134,6 +137,7 @@
 				title: curateTitle.trim(),
 				description: curateDescription.trim(),
 				source: curateSource,
+				source_url: curateSourceURL.trim(),
 				severity: curateSeverity,
 				curator_notes: curateNotes.trim(),
 			});
@@ -369,6 +373,10 @@
 									<span class="meta-item">{cc.source}</span>
 									<span class="meta-sep">|</span>
 									<span class="meta-item">{formatDate(cc.created_at)}</span>
+									{#if cc.source_url}
+										<span class="meta-sep">|</span>
+										<a href={cc.source_url} target="_blank" rel="noopener" class="meta-link">Article</a>
+									{/if}
 								</div>
 								{#if cc.curator_notes}
 									<p class="curator-notes">Note: {cc.curator_notes}</p>
@@ -464,6 +472,16 @@
 							placeholder="e.g. reuters, bbc"
 						/>
 					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="curate-source-url">Source URL</label>
+					<input
+						id="curate-source-url"
+						type="url"
+						bind:value={curateSourceURL}
+						placeholder="https://..."
+					/>
 				</div>
 
 				<div class="form-group">

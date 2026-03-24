@@ -96,6 +96,9 @@
 								<div class="challenge-main">
 									<h3 class="challenge-title">{challenge.title}</h3>
 									<p class="challenge-desc">{challenge.description}</p>
+									{#if challenge.source_url}
+										<a href={challenge.source_url} target="_blank" rel="noopener" class="source-link" on:click|stopPropagation>Read article</a>
+									{/if}
 								</div>
 								<div class="challenge-meta">
 									<span class="source-badge"
@@ -233,6 +236,18 @@
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
+	}
+
+	.source-link {
+		display: inline-block;
+		margin-top: 0.3rem;
+		font-size: 0.75rem;
+		color: var(--accent);
+		text-decoration: none;
+	}
+
+	.source-link:hover {
+		text-decoration: underline;
 	}
 
 	.challenge-meta {

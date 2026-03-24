@@ -47,6 +47,7 @@ export interface Challenge {
 	title: string;
 	description: string;
 	source: string;
+	source_url: string;
 	region: string;
 	severity: number;
 	created_at: string;
@@ -146,6 +147,7 @@ export interface CuratedChallenge {
 	title: string;
 	description: string;
 	source: string;
+	source_url: string;
 	severity: number;
 	active: boolean;
 	used_in_game: boolean;
@@ -160,6 +162,7 @@ export interface CurateChallengeRequest {
 	title: string;
 	description: string;
 	source: string;
+	source_url: string;
 	severity: number;
 	curator_notes: string;
 }
